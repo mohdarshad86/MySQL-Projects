@@ -1,0 +1,75 @@
+Create a Database and Tables:
+
+Design and create a database for a library management system.
+Create tables for books, authors, borrowers, and transactions, with appropriate columns and data types.
+Set up relationships between the tables using primary and foreign keys.
+
+SHOW DATABASES;
+
+CREATE DATABASE library_management_system;
+
+USE library_management_system;
+
+CREATE TABLE authors (
+  author_id INT AUTO_INCREMENT PRIMARY KEY,
+  author_name VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE books (
+  book_id INT AUTO_INCREMENT PRIMARY KEY,
+  title VARCHAR(255) NOT NULL,
+  author_id INT NOT NULL,
+  publisher VARCHAR(255) NOT NULL,
+  publication_date DATE NOT NULL,
+  genre VARCHAR(255) NOT NULL,
+  ISBN VARCHAR(13) NOT NULL,
+  total_copies INT NOT NULL,
+  available_copies INT NOT NULL,
+  FOREIGN KEY (author_id) REFERENCES authors(author_id)
+);
+
+CREATE TABLE borrowers (
+  borrower_id INT AUTO_INCREMENT PRIMARY KEY,
+  borrower_name VARCHAR(255) NOT NULL,
+  borrower_email VARCHAR(255) NOT NULL,
+  borrower_phone VARCHAR(20) NOT NULL
+);
+
+CREATE TABLE transactions (
+  transaction_id INT AUTO_INCREMENT PRIMARY KEY,
+  book_id INT NOT NULL,
+  borrower_id INT NOT NULL,
+  checkout_date DATE NOT NULL,
+  due_date DATE NOT NULL,
+  return_date DATE,
+  FOREIGN KEY (book_id) REFERENCES books(book_id),
+  FOREIGN KEY (borrower_id) REFERENCES borrowers(borrower_id)
+);
+
+INSERT INTO authors (author_name) VALUES
+  ('J.K. Rowling'),
+  ('Stephen King'),
+  ('Harper Lee'),
+  ('F. Scott Fitzgerald');
+
+INSERT INTO books (title, author_id, publisher, publication_date, genre, ISBN, total_copies, available_copies) VALUES
+  ('Harry Potter and the Philosopher''s Stone', 1, 'Bloomsbury Publishing', '1997-06-26', 'Fantasy', '9780747532743', 5, 5),
+  ('Harry Potter and the Chamber of Secrets', 1, 'Bloomsbury Publishing', '1998-07-02', 'Fantasy', '9780747538493', 3, 3),
+  ('Harry Potter and the Prisoner of Azkaban', 1, 'Bloomsbury Publishing', '1999-07-08', 'Fantasy', '9780747542155', 7, 7),
+  ('The Shining', 2, 'Doubleday', '1977-01-28', 'Horror', '9780385121675', 2, 2),
+  ('To Kill a Mockingbird', 3, 'J.B. Lippincott & Co.', '1960-07-11', 'Fiction', '9780061120084', 4, 4),
+  ('The Great Gatsby', 4, 'Charles Scribner''s Sons', '1925-04-10', 'Fiction', '9780743273565', 3, 3);
+
+INSERT INTO borrowers (borrower_name, borrower_email, borrower_phone) VALUES
+  ('John Smith', 'johnsmith@gmail.com', '555-1234'),
+  ('Jane Doe', 'janedoe@yahoo.com', '555-5678');
+
+INSERT INTO transactions (book_id, borrower_id, checkout_date, due_date) VALUES
+  (1, 1, '2022-01-01', '2022-01-08'),
+  (3, 1, '2022-01-02', '2022-01-09'),
+  (5, 2, '2022-01-03', '2022-01-10');
+  
+SHOW DATABASES;
+DESCRIBE transactions;
+
+SELECT * FROM transactions;
